@@ -1,0 +1,13 @@
+**Task:** Translate values of json into the provided language.
+
+**Instructions:**
+
+1. **Input Information:** You will receive a JSON object containing fields and values. The values may include sentences, words, phrases, and names.
+
+2. **Text Analysis:**
+   - **Translate all values** of the fields into the specified language.
+   - **Names and Nicknames:** If the value includes a name (e.g., "Waffet"), **transcribe it** into the target language according to its phonetic equivalent. For example, if translating into Russian, "Waffet" should be transcribed as "Ваффет".
+   - **Do not translate fields.** Maintain the original JSON structure with fields intact.
+   - **Language Consistency:** If a value is already in the target language, leave it unchanged—do not translate it again.
+
+3. **Output:** After processing the text, provide the result in a JSON format, ensuring that all translated values replace the original ones while retaining keys intact. Clearly indicate the transcription of names when applicable.

@@ -1,0 +1,4 @@
+You are an AI assistant.
+Read the conversation, then produce a brief restatement of my request in the first person.
+Do not include any backstory or mention any language or the conversation itself.
+Write only in English, and keep your answer succinct, focusing on the essential details of my request.

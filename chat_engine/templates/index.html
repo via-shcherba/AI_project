@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles_v0.1.0.css' %}">
+</head>
+<body>
+
+{% block content %}
+
+<div class="chat-container">
+
+  <div class="main-chat-header">
+    <div class="custom-card-header text-white">
+      <div class="chat-header">
+          <h2 id="chat-name" class="header-text"></h2>
+          <div id="dropdown-button" class="header-button hidden">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="button-icon">
+              <path d="M12 19.5C11.1716 19.5 10.5 18.8284 10.5 18C10.5 17.1716 11.1716 16.5 12 16.5C12.8284 16.5 13.5 17.1716 13.5 18C13.5 18.8284 12.8284 19.5 12 19.5Z" fill="white"/>
+              <path d="M12 13.5C11.1716 13.5 10.5 12.8284 10.5 12C10.5 11.1716 11.1716 10.5 12 10.5C12.8284 10.5 13.5 11.1716 13.5 12C13.5 12.8284 12.8284 13.5 12 13.5Z" fill="white"/>
+              <path d="M12 7.5C11.1716 7.5 10.5 6.82843 10.5 6C10.5 5.17157 11.1716 4.5 12 4.5C12.8284 4.5 13.5 5.17157 13.5 6C13.5 6.82843 12.8284 7.5 12 7.5Z" fill="white"/>
+            </svg>
+          </div>
+          <div id="close-chat-btn" class="header-button" onclick="closeWidget();" >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="button-icon">
+              <path d="M6 9L12 15L18 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="optionsMenu">
+          <ul id="top-dropdown-menu" class="dropdown-list hidden left48">
+            <li class="dropdown-item">
+              <button id="close-conversation" class="closeConversationOption" onclick="clearChat();"> 
+                <span class="closeConversation">Clear history</span>
+              </button>
+              <div class="rhombus"></div>
+            </li>
+          </ul>
+        </div>
+        <div id="top-spinner" class="top-spinner hidden">
+          <div class="top-spinner-container">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+          </div>
+          <span id="top-spinner-message">Loading...</span>
+        </div>
+    </div>
+    <div id="overlay" class="chatOverlay hidden"></div>
+  </div>
+  <div class="content-body">
+       
+    <div id="messagesBox" class="messages-box">     
+      <ul class="list-unstyled messages-list">
+        
+      </ul>       
+    </div>
+
+  </div>
+
+  <div id="attachments-box" class="attachments-list hidden">
+    <div id="warning" class="warning">
+      <div class="warning-body">
+         <span class="warning-icon">
+            <svg focusable="false" aria-hidden="true" viewBox="0 0 520 520" part="icon" data-key="error">
+              <g>
+                  <path d="M260 20C128 20 20 128 20 260s108 240 240 240 240-108 240-240S392 20 260 20zM80 260a180 180 0 01284-147L113 364a176 176 0 01-33-104zm180 180c-39 0-75-12-104-33l251-251a180 180 0 01-147 284z"></path>
+              </g>
+            </svg>
+         </span>
+        <span id="attachment-warning-message" class="warning-text"></span>
+      </div>
+    </div>
+    <ul id="attachments-list">
+    </ul>
+  </div>
+  
+  <div class="footer">
+    <form class="message-form">
+      {%csrf_token%}
+      <div class="input-group">    
+        <textarea class="main-textarea" placeholder="Type your message..." rows="1"></textarea>     
+        <div id="attachment-loader" class="attachment-wrapper hidden">
+          <label for="file-upload">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.0661 9.20142L10.7021 15.5654C10.3646 15.9029 9.91312 16.099 9.44709 16.1103C8.98107 16.1217 8.53865 15.9475 8.21716 15.626C7.89567 15.3045 7.72144 14.8621 7.73281 14.3961C7.74417 13.93 7.9402 13.4786 8.27777 13.141L15.066 6.35279C15.6286 5.79018 16.381 5.46347 17.1577 5.44452C17.9344 5.42558 18.6718 5.71595 19.2076 6.25177C19.7434 6.78759 20.0338 7.52496 20.0149 8.30166C19.9959 9.07837 19.6692 9.83079 19.1066 10.3934L11.4698 18.0302C10.6822 18.8178 9.62881 19.2752 8.54142 19.3017C7.45403 19.3282 6.42172 18.9217 5.67157 18.1716C4.92143 17.4214 4.5149 16.3891 4.54142 15.3017C4.56794 14.2143 5.02534 13.1609 5.81299 12.3733L13.4497 4.73654" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input type="file" id="file-upload" class="file-input" accept="image/png, image/jpeg, image/jpg, image/bmp, image/gif, image/tiff, application/pdf" multiple/>
+          </label>
+        </div>
+        <div class="send-button-wrapper">
+          <button id="submit" type="submit" class="send-button" disabled="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 3L3 9.95L8.31 12.56L12.56 10.44L10.44 14.69L13.05 20L20 3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </form>
+    <div id="scrollDownButton" class="scroll-down-block hidden">
+      <div>
+        <div id="unread-ind" class="hidden">
+          <div onclick="scrollTextarea();">
+            <div class="unread">
+              <span>1</span>
+            </div>
+          </div> 
+        </div>
+        <div class="chevrondown-btn" onclick="scrollTextarea();">
+          <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1L7 7L13 1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>     
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{ session_id|json_script:"session_id" }}
+<script src="{% static 'js/chat.v2.6.4.js' %}"></script>
+{% endblock %}
+</body>
+</html>

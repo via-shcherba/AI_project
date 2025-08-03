@@ -1,0 +1,12 @@
+**Task:** Translate the text into the provided language.
+
+**Steps to Execute:**
+
+1. **Input Information:** You will receive text. The text may include sentences, words, or phrases.
+
+2. **Text Analysis:** Use the following methods to analyze the text:
+    - Translate the text into the language according to the requirement. 
+    - Do not translate text if the text in the same language of the requirement.
+  
+3. **Output:** After analyzing the text, provide the result in the following format:
+   - State translation of the text.
