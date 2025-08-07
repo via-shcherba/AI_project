@@ -16,17 +16,6 @@ class KnowledgeBaseSearch():
     def __init__(self, local_faiss):
         self.local_faiss = local_faiss   
                            
-    
-    # async def getSearchResult(self, request, show_links):   
-    #     docs = await asyncio.to_thread(self.local_faiss.similarity_search_with_score, request, k=4)
-    #     converted_docs = self.convert_documents(docs) 
-    #     message_content = re.sub(
-    #         r'\n{2}', 
-    #         ' ', 
-    #         '\n '.join([f'\nKnowledge Base Article №{i+1} s{doc.score}\n{self.source_permition(doc.score, doc.page_content, show_links)}'
-    #                      for i, doc in enumerate(converted_docs)])
-    #     )
-    #     return message_content
 
     async def getSearchResult(self, request, show_links):   
         valid_score = 1.3
@@ -47,7 +36,7 @@ class KnowledgeBaseSearch():
     
     
     def remove_article_id(self, text):
-        article_id_regex = r'&#(\d+)&#'
+        article_id_regex = r'&#.*?&#'
         updated_text = re.sub(article_id_regex, '', text).strip()    
         return updated_text
     
@@ -62,15 +51,6 @@ class KnowledgeBaseSearch():
         else:
             return self.remove_article_id(text)
     
-    
-    # def source_permition(self, input_str):
-    #     score = float(input_str)
-    #     print(score)
-    #     if score <= 0.48:
-    #         return ''
-    #     else:
-    #         return 'Do not show this link'
-
     
     def convert_documents(self, input_list: List[Tuple[Document, float]]) -> List[Document]:
         return [Document(metadata=doc.metadata, page_content=doc.page_content, score=score) for doc, score in input_list]
