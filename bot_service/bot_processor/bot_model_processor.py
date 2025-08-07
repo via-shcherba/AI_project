@@ -111,7 +111,7 @@ class Bot:
         messages = [
             {"role": "system", "content": system_instruction + '\n\nUse this context: ' + dynamic_context},
         ]
-        
+        print(dynamic_context)
         if filtered_history:
             messages.extend(filtered_history)
         messages.append({"role": "user", "content": user_request})
@@ -217,11 +217,13 @@ class Bot:
         thread_2 = {
             'get_knowledge_search_result': self.get_knowledge_search_result(consumers, need_detector_result, True),
             'get_google_search_result': self.get_google_search_result(consumers, need_detector_result),
+            'get_ban_service_result': self.get_ban_service_result(consumers, need_detector_result)
         }       
         
         results_dict_thread_2 = await self.process_thread('Thread_2', thread_2, consumers)
         knowledge_base_search_result = results_dict_thread_2.get('get_knowledge_search_result', '')
         google_search_result = results_dict_thread_2.get('get_google_search_result', '')
+        ban_service_result = results_dict_thread_2.get('get_ban_service_result', '')
 
         thread_3 = {}        
         if request_language_result != saved_request_language and request_language_result != consumers.default_language:
@@ -229,7 +231,7 @@ class Bot:
                              
         knowledge_base_search_result = extract_and_replace_help_centere_url(knowledge_base_search_result, request_language_result, consumers.languages_by_article_id)             
         
-        dynamic_context = 'Knowledge Base Articles [\n' + knowledge_base_search_result + ']\nInternet Articles:\n' + google_search_result   
+        dynamic_context = 'Knowledge Base Articles [\n' + knowledge_base_search_result + ']\nInternet Articles:\n' + google_search_result + '\n' + ban_service_result   
         user_request = f"Answer the user's question in {request_language_result}: [ {request} ]"
         
         thread_3['analyze_with_main_model'] = self.analyze_with_main_model(

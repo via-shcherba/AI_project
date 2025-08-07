@@ -61,6 +61,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             commands = []
             self.room_name = self.scope["url_route"]["kwargs"]["session_id"]            
             
+            # Reload updated knowledge base
             if self.room_name == 'update-kb-admin': 
                 ChatConsumer.HELP_KB_INIT = Help_KB_Init(settings.VECTOR_STORAGE_FOLDER_PATH, settings.VECTOR_STORAGE_FILE, settings.ARTICLE_LANGUAGES_PATH)
                 ChatConsumer.LOADED_BOT_MODEL_BY_CHAT_ID = OrderedDict()

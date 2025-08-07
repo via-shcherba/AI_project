@@ -4,3 +4,7 @@ env
 /logs
 /__pycache__
 dump.rdb
+/logs
+logs
+/__pycache__
+__pycache__
